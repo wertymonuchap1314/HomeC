@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HomeC - Login</title>
+</head>
+
+<body>
+
+<h2>HomeC</h2>
+
+<h3>Register</h3>
+<input type="text" id="regUser" placeholder="Username"><br><br>
+<input type="password" id="regPass" placeholder="Password"><br><br>
+<button onclick="register()">Register</button>
+
+<hr>
+
+<h3>Login</h3>
+<input type="text" id="logUser" placeholder="Username"><br><br>
+<input type="password" id="logPass" placeholder="Password"><br><br>
+<button onclick="login()">Login</button>
+
+<script>
+function register() {
+  let username = document.getElementById("regUser").value;
+  let password = document.getElementById("regPass").value;
+
+  if (username === "" || password === "") {
+    alert("Fill all fields");
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  let exists = users.find(user => user.username === username);
+  if (exists) {
+    alert("Username already exists");
+    return;
+  }
+
+  users.push({ username: username, password: password });
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Account created!");
+}
+
+function login() {
+  let username = document.getElementById("logUser").value;
+  let password = document.getElementById("logPass").value;
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  let user = users.find(user => 
+    user.username === username && user.password === password
+  );
+
+  if (!user) {
+    alert("Invalid login");
+    return;
+  }
+
+  localStorage.setItem("loggedInUser", username);
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
